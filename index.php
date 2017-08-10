@@ -2,15 +2,18 @@
 
 require_once("vendor/autoload.php");
 
+use \Hcode\DB\Sql;
+
+
 $app = new \Slim\Slim();
 
 $app->config('debug', true);
 
 $app->get('/', function() {
     
-	$sql = new Hcode\DB\Sql();
+	$teste = new Sql();
 
-	$results = $sql->Select("SELECT * FROM db_users");
+	$results = $teste->select('SELECT * FROM Tb_users');
 
 	echo json_encode($results);
 
