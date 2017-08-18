@@ -14,6 +14,7 @@ class User extends Model{
 
 		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(":LOGIN"=>$login));
 
+
 		if(count($results) === 0){
 			throw new \Exception("usuário ou senha inválida");
 			
@@ -21,7 +22,7 @@ class User extends Model{
 
 		$data = $results[0];
 
-		if( password_verify($password, $data["despassword"]) === true ){
+		if(password_verify($password, $data["despassword"])){
 
 			$user = new User();
 			$user->setData($data);
@@ -32,6 +33,7 @@ class User extends Model{
 		}else{
 			throw new \Exception("usuário ou senha inválida");
 		}
+
 
 	}
 
