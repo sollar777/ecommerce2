@@ -11,7 +11,6 @@ class Model{
 		$method = substr($nome, 0, 3);
 		$fieldName = substr($nome, 3, strlen($nome));
 
-
 		switch($method){
 
 			case "get":

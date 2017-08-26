@@ -7,6 +7,7 @@ use \Slim\slim;
 use \Hcode\Page;
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
+use \Hcode\Model\Category;
 
 
 $app = new Slim();
@@ -23,7 +24,7 @@ $app->get('/', function() {
 
 $app->get('/admin', function() {
     
-    //User::verifyLogin();
+    User::verifyLogin();
 
 	$page = new PageAdmin();
 
@@ -61,7 +62,7 @@ $app->get('/admin/logout', function(){
 
 $app->get('/admin/users', function(){
 
-	//User::verifyLogin();
+	User::verifyLogin();
 
 	$users = User::listAll();
 
@@ -72,17 +73,38 @@ $app->get('/admin/users', function(){
 
 });
 
+$app->get('/admin/categorias', function(){
+
+	User::verifyLogin();
+
+	$categorias = Category::listAll();
+
+	$page = new PageAdmin();
+	$page->setTpl("categorias", array(
+			"categorias"=>$categorias
+		));
+
+});
+
 $app->get('/admin/users/create', function(){
 	
-	//User::verifyLogin();
+	User::verifyLogin();
 	$page = new PageAdmin();
 	$page->setTpl("users-create");
 
 });
 
+$app->get('/admin/categoria/create', function(){
+	
+	User::verifyLogin();
+	$page = new PageAdmin();
+	$page->setTpl("categorias-create");
+
+});
+
 $app->get('/admin/users/:iduser/delete', function($iduser){
 
-	//User::verifyLogin();
+	User::verifyLogin();
 
 	$user = new User();
 	$user->get((int)$iduser);
@@ -95,7 +117,7 @@ $app->get('/admin/users/:iduser/delete', function($iduser){
 
 $app->get('/admin/users/:iduser', function($iduser){
 	
-	//User::verifyLogin();
+	User::verifyLogin();
 
 	$user = new User();
 	$user->get((int)$iduser);
@@ -109,7 +131,7 @@ $app->get('/admin/users/:iduser', function($iduser){
 
 $app->post('/admin/users/create', function(){
 
-	//User::verifyLogin();
+	User::verifyLogin();
 
 	$user = new User();
 	$_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
@@ -124,9 +146,22 @@ $app->post('/admin/users/create', function(){
 
 });
 
+$app->post('/admin/categoria/create', function(){
+
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->setData($_POST);
+	$category->save();
+
+	header("Location: /admin/categorias");
+	exit;
+
+});
+
 $app->post('/admin/users/:iduser', function($iduser){
 
-	//User::verifyLogin();
+	User::verifyLogin();
 
 	$user = new User();
 	$user->get((int)$iduser);
