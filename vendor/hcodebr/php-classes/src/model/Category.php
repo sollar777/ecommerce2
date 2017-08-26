@@ -11,18 +11,22 @@ class Category extends Model{
 		$sql = new Sql();
 
 		return $sql->select("SELECT idcategory, descategory, DATE_FORMAT(dtregister, '%d/%m/%Y') as data FROM tb_categories ORDER BY descategory");
+
 	}
 
-	public static function save(){
+
+	public function save(){
+
 		$sql = new Sql();
 
-		$results = $sql->select("CALL sp_category_save(:descategory)", array(
-			":descategory"=>$this->getdescategory();
+		$results = $sql->select("CALL sp_category_save(:idcategory, :descategory)", array(
+				":idcategory"=>$this->getidcategory(),
+				":descategory"=>$this->getdescategory()
 			));
 
 		$this->setData($results[0]);
 	}
-}
 
+}
 
 ?>

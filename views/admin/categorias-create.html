@@ -27,12 +27,12 @@
           <div class="box-body">
             <div class="form-group">
               <label for="categoria">Nome</label>
-              <input type="text" class="form-control" id="descategory" name="descategory" placeholder="Digite a categoria">
+              <input type="text" class="form-control" id="descategory" name="descategory" placeholder="Digite a categoria" required="required">
             </div>
           </div>
           <!-- /.box-body -->
           <div class="box-footer">
-            <button type="submit" class="btn btn-success">Cadastrar</button>
+            <button type="submit" class="btn btn-success" id="cadastrar">Cadastrar</button>
           </div>
         </form>
       </div>
