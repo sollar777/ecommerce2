@@ -19,7 +19,7 @@
   		<div class="box box-primary">
             
             <div class="box-header">
-              <a href="/admin/categoria/create" class="btn btn-success" id="cadastrar2">Cadastrar Categorias</a>
+              <a href="/admin/categoria/create" class="btn btn-success teste" id="cadastrar2">Cadastrar Categorias</a>
             </div>
 
             <div class="box-body no-padding">

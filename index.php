@@ -115,6 +115,19 @@ $app->get('/admin/users/:iduser/delete', function($iduser){
 
 });
 
+$app->get('/admin/categoria/:iduser/delete', function($categoria){
+
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->get((int)$categoria);
+	$category->delete();
+
+	header("Location: /admin/categorias");
+	exit;
+
+});
+
 $app->get('/admin/users/:iduser', function($iduser){
 	
 	User::verifyLogin();
@@ -125,6 +138,20 @@ $app->get('/admin/users/:iduser', function($iduser){
 	$page = new PageAdmin();
 	$page->setTpl("users-update", array(
 			"user"=>$user->getValues()
+		));
+
+});
+
+$app->get('/admin/categoria/:iduser', function($categoria){
+	
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->get((int)$categoria);
+
+	$page = new PageAdmin();
+	$page->setTpl("categorias-update", array(
+			"category"=>$category->getValues()
 		));
 
 });
@@ -170,6 +197,20 @@ $app->post('/admin/users/:iduser', function($iduser){
 	$user->update();
 
 	header("Location: /admin/users");
+	exit;
+
+});
+
+$app->post('/admin/categoria/:idcategory', function($categoria){
+
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->get((int)$categoria);
+	$category->setData($_POST);
+	$category->update();
+
+	header("Location: /admin/categorias");
 	exit;
 
 });
