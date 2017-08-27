@@ -24,6 +24,8 @@ class Category extends Model{
 				":descategory"=>$this->getdescategory()
 			));
 
+		Category::updateFile();
+
 		$this->setData($results[0]);
 	}
 
@@ -47,6 +49,7 @@ class Category extends Model{
 				":descategory"=>$this->getdescategory()
 			));
 
+
 		$this->setData($results[0]);
 	}
 
@@ -57,6 +60,22 @@ class Category extends Model{
 		$sql->query("CALL sp_category_delete(:idcategory)", array(
 				":idcategory"=>$this->getidcategory()
 			));
+
+		Category::updateFile();
+	}
+
+	public static function updateFile(){
+
+		$category = Category::listAll();
+
+		$html = [];
+
+		foreach ($category as $row) {
+			array_push($html, '<li><a href="/categories/'.$row['idcategory'].'">'.$row['descategory'].'</a></li>');
+			'<br/>';
+		}
+
+		file_put_contents($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "categories-menu.html" , implode('', $html));
 	}
 
 }
