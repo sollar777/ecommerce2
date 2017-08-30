@@ -34,12 +34,12 @@ class Product extends Model{
 		$this->setData($results[0]);
 	}
 
-	public function get($idcategory){
+	public function get($idproduct){
 
 		$sql = new Sql();
 
-		$results = $sql->select("SELECT * FROM tb_categories WHERE idcategory = :idcategory", array(
-				":idcategory"=>$idcategory
+		$results = $sql->select("SELECT * FROM tb_products WHERE idproduct = :idproduct", array(
+				":idproduct"=>$idproduct
 			));
 
 		$this->setData($results[0]);
@@ -62,11 +62,10 @@ class Product extends Model{
 
 		$sql = new sql();
 
-		$sql->query("CALL sp_category_delete(:idcategory)", array(
-				":idcategory"=>$this->getidcategory()
+		$sql->query("CALL sp_products_delete(:idproduct)", array(
+				":idproduct"=>$this->getidproduct()
 			));
 
-		Category::updateFile();
 	}
 
 	public static function updateFile(){
@@ -81,6 +80,61 @@ class Product extends Model{
 		}
 
 		file_put_contents($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "categories-menu.html" , implode('', $html));
+	}
+
+	public function checkPhoto(){
+
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "site" . DIRECTORY_SEPARATOR . "img" . DIRECTORY_SEPARATOR . "products-photo" . DIRECTORY_SEPARATOR . $this->getidproduct() . ".jpg"))
+		{
+
+		$url = "/res/site/img/products-photo/" . $this->getidproduct() . ".jpg";
+
+		}else{
+			$url = "/res/site/img/products-photo/padrao.jpg";
+		}
+
+
+	return $this->setdesphoto($url);
+}
+
+	public function getValues(){
+
+		$this->checkPhoto();
+
+		$values = parent::getValues();
+
+		return $values;
+	}
+
+	public function setPhoto($file){
+
+		$extension = explode('.', $file["name"]);
+		$extension = end($extension);
+
+		switch ($extension) {
+			case "jpg":
+			case "jpeg":
+
+				$imagem = imagecreatefromjpeg($file["tmp_name"]);
+				break;
+			
+			case "gif":
+
+			$imagem = imagecreatefromgif($file["tmp_name"]);
+			break;
+
+			case "png":
+
+			$imagem = imagecreatefrompng($file["tmp_name"]);
+			break;
+		}
+
+		$destino = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "site" . DIRECTORY_SEPARATOR . "img" . DIRECTORY_SEPARATOR . "products-photo" . DIRECTORY_SEPARATOR . $this->getidproduct() . ".jpg";
+
+		imagejpeg($imagem, $destino);
+		imagedestroy($imagem);
+
+		$this->checkPhoto();
 	}
 
 }
